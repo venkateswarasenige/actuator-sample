@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sprigboot-gitlab
+  labels:
+    app: springboot-gitlab
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: springboot-gitlab
+  template:
+    metadata:
+      labels:
+        app: springboot-gitlab
+    spec:
+      containers:
+      - name: springboot-gittlab
+        image: svdevops/sbtr-repo:gitlab
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mavengitlab-service
+spec:
+  selector:
+    app: springboot-gitlab
+  ports:
+  - protocol: "TCP"
+    port: 8080
+    targetPort: 8080
+  type: LoadBalancer
+
